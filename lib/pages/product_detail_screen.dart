@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:payment_method/services/shared_preferences.dart';
 
 import '../services/stripe_service.dart';
 import '../widgets/support_widget.dart';
@@ -18,6 +19,7 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +104,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        StripeService.instance.makePayment(widget.price);
+                        StripeService.instance.makePayment(
+                          context,
+                          widget.name,
+                          widget.price,
+                          widget.image,
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,

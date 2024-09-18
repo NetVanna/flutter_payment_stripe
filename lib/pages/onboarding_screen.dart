@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:payment_method/pages/sign_up_screen.dart';
 
 import 'login_screen.dart';
 
@@ -41,7 +42,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
+                        builder: (context) => const SignUpScreen(),
                       ),
                     );
                   },

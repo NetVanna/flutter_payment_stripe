@@ -10,6 +10,20 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      backgroundColor: const Color(0xfff2f2f2),
+      appBar: AppBar(
+        backgroundColor: const Color(0xfff2f2f2),
+        title: const Text(
+          "Current Order",
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
+    );
   }
 }

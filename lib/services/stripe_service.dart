@@ -1,15 +1,23 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:payment_method/constants.dart'; // Make sure your constant file contains the stripeSecretKey
+import 'package:payment_method/constants.dart';
+import 'package:payment_method/services/database.dart'; // Make sure your constant file contains the stripeSecretKey
 
 class StripeService {
   StripeService._();
 
   static final StripeService instance = StripeService._();
 
-  Future<void> makePayment(String amount) async {
+  Future<void> makePayment(
+    BuildContext context,
+    String productName,
+    String price,
+    String productImage,
+  ) async {
     try {
-      String? paymentIntentClientSecret = await _createPaymentIntent(amount, "USD");
+      String? paymentIntentClientSecret =
+          await _createPaymentIntent(price, "USD");
       if (paymentIntentClientSecret == null) return;
 
       // Initialize payment sheet
@@ -21,7 +29,12 @@ class StripeService {
       );
 
       // Present the payment sheet
-      await _processPayment();
+      await _processPayment(
+        context,
+        productName,
+        price,
+        productImage,
+      );
     } catch (e) {
       print('Error in makePayment: $e');
     }
@@ -63,11 +76,43 @@ class StripeService {
     return null;
   }
 
-  Future<void> _processPayment() async {
+  Future<void> _processPayment(
+    BuildContext context,
+    String productName,
+    String price,
+    String productImage,
+  ) async {
     try {
       // Present the payment sheet to the user
-      await Stripe.instance.presentPaymentSheet();
-      print('Payment successful');
+      await Stripe.instance.presentPaymentSheet().then((value) async {
+        Map<String, dynamic> orderInfoMap = {
+          "Product": productName,
+          "Price": price,
+          "ProductImage": productImage,
+        };
+        await DatabaseMethod().orderDetails(orderInfoMap);
+        showDialog(
+          context: context,
+          builder: (_) => const AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.check_circle,
+                      color: Colors.green,
+                    ),
+                    Text("Payment Successful"),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      });
+
+      print('Payment successful'); // add Alert dialog for show msg
     } catch (e) {
       print('Error in _processPayment: $e');
     }
@@ -75,7 +120,8 @@ class StripeService {
 
   // Calculate the amount in the smallest currency unit (e.g., cents)
   String _calculateAmount(String amount) {
-    final calculateAmount = (int.parse(amount) * 100); // Convert to integer (cents)
+    final calculateAmount =
+        (int.parse(amount) * 100); // Convert to integer (cents)
     return calculateAmount.toString();
   }
 }

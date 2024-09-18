@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:payment_method/pages/bottom_nav_bar.dart';
 import 'package:random_string/random_string.dart';
 
 import '../services/database.dart';
@@ -51,7 +52,7 @@ class _LoginScreenState extends State<SignUpScreen> {
         await Future.delayed(const Duration(seconds: 3));
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
+          MaterialPageRoute(builder: (context) => const BottomNavBar()),
         );
       } on FirebaseException catch (e) {
         if (e.code == 'weak-password') {
