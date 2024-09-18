@@ -7,9 +7,9 @@ class StripeService {
 
   static final StripeService instance = StripeService._();
 
-  Future<void> makePayment() async {
+  Future<void> makePayment(String amount) async {
     try {
-      String? paymentIntentClientSecret = await _createPaymentIntent(10, "USD");
+      String? paymentIntentClientSecret = await _createPaymentIntent(amount, "USD");
       if (paymentIntentClientSecret == null) return;
 
       // Initialize payment sheet
@@ -27,7 +27,7 @@ class StripeService {
     }
   }
 
-  Future<String?> _createPaymentIntent(double amount, String currency) async {
+  Future<String?> _createPaymentIntent(String amount, String currency) async {
     try {
       final Dio dio = Dio();
 
@@ -74,8 +74,8 @@ class StripeService {
   }
 
   // Calculate the amount in the smallest currency unit (e.g., cents)
-  String _calculateAmount(double amount) {
-    final calculateAmount = (amount * 100).toInt(); // Convert to integer (cents)
+  String _calculateAmount(String amount) {
+    final calculateAmount = (int.parse(amount) * 100); // Convert to integer (cents)
     return calculateAmount.toString();
   }
 }

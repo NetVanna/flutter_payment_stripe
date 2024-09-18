@@ -25,7 +25,7 @@ class _HomeScreenStripeState extends State<HomeScreenStripe> {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            StripeService.instance.makePayment();
+            StripeService.instance.makePayment("10");
           },
           style: ElevatedButton.styleFrom(
             shape: const ContinuousRectangleBorder(),
