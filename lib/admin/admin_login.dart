@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:payment_method/admin/all_orders.dart';
 
 import '../pages/login_screen.dart';
 import '../widgets/support_widget.dart';
@@ -35,7 +36,7 @@ class _AdminLoginState extends State<AdminLogin> {
         } else {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const AddProduct()),
+            MaterialPageRoute(builder: (context) => const AllOrders()),
           );
         }
       });

@@ -52,7 +52,7 @@ class _LoginScreenState extends State<SignUpScreen> {
         await Future.delayed(const Duration(seconds: 3));
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const BottomNavBar()),
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
         );
       } on FirebaseException catch (e) {
         if (e.code == 'weak-password') {

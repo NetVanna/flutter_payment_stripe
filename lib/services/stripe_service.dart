@@ -89,6 +89,7 @@ class StripeService {
           "Product": productName,
           "Price": price,
           "ProductImage": productImage,
+          "Status": "On the way",
         };
         await DatabaseMethod().orderDetails(orderInfoMap);
         showDialog(

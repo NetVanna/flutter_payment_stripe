@@ -1,21 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:payment_method/widgets/support_widget.dart';
 
 import '../services/database.dart';
 
-class OrderScreen extends StatefulWidget {
-  const OrderScreen({super.key});
+class AllOrders extends StatefulWidget {
+  const AllOrders({super.key});
 
   @override
-  State<OrderScreen> createState() => _OrderScreenState();
+  State<AllOrders> createState() => _AllOrdersState();
 }
 
-class _OrderScreenState extends State<OrderScreen> {
+class _AllOrdersState extends State<AllOrders> {
   Stream? orderStream;
 
   getOnTheLoad() async {
-    orderStream = await DatabaseMethod().getOrders();
+    orderStream = await DatabaseMethod().allOrders();
     setState(() {});
   }
 
@@ -82,13 +81,30 @@ class _OrderScreenState extends State<OrderScreen> {
                                       color: Colors.redAccent,
                                     ),
                                   ),
-                                  Text(
-                                    "Status: ${ds["Status"]}",
-                                    style: const TextStyle(
-                                      color: Colors.redAccent,
-                                      fontSize: 16,
+                                  const SizedBox(height: 10),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await DatabaseMethod().updateStatus(ds.id);
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 5,
+                                        horizontal: 40,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.redAccent,
+                                      ),
+                                      child: const Text(
+                                        "Done",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
@@ -107,18 +123,15 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff2f2f2),
       appBar: AppBar(
-        backgroundColor: const Color(0xfff2f2f2),
         title: const Text(
-          "Current Order",
+          "All Orders",
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
-        automaticallyImplyLeading: false,
       ),
       body: Container(
         margin: const EdgeInsets.only(left: 10, right: 10),
